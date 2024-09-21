@@ -414,7 +414,7 @@ Updates are done under -
 
 `targets > build > configurations`
 
-`targets > serve`
+`targets > serve > configurations`
 
 ```json
 {
@@ -570,7 +570,7 @@ function getRemoteAppUrl(): Promise<Record<string, any>> {
 
 By now, you will be able to see the changes in Nx console with an updated entry under build and serve option:
 
-![](C:\Users\zakir\AppData\Roaming\marktext\images\2024-09-21-15-50-37-image.png)
+![](../resources/todo-monorepo-app/updated-nx-console-with-configurations.png)
 
 **Step 4**: Add an element into shell-app> src > app > app.component to see live changes:
 
@@ -622,13 +622,15 @@ This will show an element that will tell us what environment we are currently ru
 
 Development:
 
-![](C:\Users\zakir\AppData\Roaming\marktext\images\2024-09-21-15-55-47-image.png)
+![](../resources/todo-monorepo-app/shell-app-dev.png)
 
 UAT:
 
-![](C:\Users\zakir\AppData\Roaming\marktext\images\2024-09-21-15-55-05-image.png)
+![](../resources/todo-monorepo-app/shell-app-uat.png)
 
+## Deployment
 
+Vercel deployment
 
 ## Contributing
 
