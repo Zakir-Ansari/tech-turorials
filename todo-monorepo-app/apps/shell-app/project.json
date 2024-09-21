@@ -45,7 +45,27 @@
           "outputHashing": "all",
           "customWebpackConfig": {
             "path": "apps/shell-app/webpack.prod.config.ts"
-          }
+          },
+          "fileReplacements": [
+            {
+              "replace": "apps/shell-app/src/environments/environment.ts",
+              "with": "apps/shell-app/src/environments/environment.prod.ts"
+            }
+          ]
+        },
+        "uat": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/shell-app/src/environments/environment.ts",
+              "with": "apps/shell-app/src/environments/environment.uat.ts"
+            }
+          ]
         },
         "development": {
           "buildOptimizer": false,
@@ -67,6 +87,9 @@
       "configurations": {
         "production": {
           "buildTarget": "shell-app:build:production"
+        },
+        "uat": {
+          "buildTarget": "shell-app:build:uat"
         },
         "development": {
           "buildTarget": "shell-app:build:development"

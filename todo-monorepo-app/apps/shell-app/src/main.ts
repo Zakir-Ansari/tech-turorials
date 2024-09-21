@@ -1,5 +1,5 @@
 import { setRemoteDefinitions } from '@nx/angular/mf';
-import { remoteUrlMap } from './app/constants/remote-urls.constant';
+import { environment } from './environments/environment';
 
 getRemoteAppUrl()
   .then((remoteDefinitions) => {
@@ -9,7 +9,7 @@ getRemoteAppUrl()
 
 function getRemoteAppUrl(): Promise<Record<string, any>> {
   return new Promise((resolve, reject) => {
-    const remoteAppUrl = remoteUrlMap['localhost'];
+    const remoteAppUrl = environment.remoteUrls;
 
     if (remoteAppUrl) resolve(remoteAppUrl);
     else reject('Unable to get remote urls');

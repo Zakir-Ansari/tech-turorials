@@ -13,9 +13,10 @@ This repository contains a **Todo App** built using **Nx**, **Angular**, and **M
 3. [Technologies Used](#technologies-used)
 4. [Project Structure](#project-structure)
 5. [Creating Shell and Remote Apps](#creating-shell-and-remote-apps)
-6. [Running the Application](#running-the-application)
-7. [Deployment](#deployment)
-8. [Contributing](#contributing)
+6. [Connect Host and Remote app](#connect-Host-and-Remote-app)
+7. [Creating Environments](#creating-environments)
+8. [Deployment](#deployment)
+9. [Contributing](#contributing)
 
 ## Introduction to Nx Monorepo
 
@@ -342,6 +343,292 @@ export const appRoutes: Route[] = [
 **Step 5**: Restart host and remote servers then load host url: `localhost:4200`
 
 ![](../resources/todo-monorepo-app/ui-with-shell-and-remote.gif)
+
+
+
+## Creating Environments
+
+To handle environment variables in an Nx Angular monorepo that can be used across the application for different environments like development (`dev`), staging (`uat`), and production (`prod`). Nx and Angular provide built-in mechanisms to handle environment-specific configurations, and you can extend this to fit your use case.
+
+Here are the steps to set up environment variables in an Nx Angular monorepo for `dev`, `uat`, and `prod` environments:
+
+
+
+**Step 1**: Set Up Environment Files for Each App
+
+Each Angular application in the monorepo can have its own set of environment files. By default, Angular uses the `environment.ts` and `environment.prod.ts` files, but you can add more environments like `sit`.
+
+For example, in each app (e.g., `shell-app`), create environment files in the `src/environments` folder:
+
+- **apps/shell-app/src/environments/environment.ts** (for `dev`):
+  
+  ```ts
+  export const environment = {
+    production: false,
+    env: 'dev',
+    remoteUrls: {
+      'create-todo': 'http://localhost:4201',
+    },
+  };
+  ```
+* **apps/shell-app/src/environments/environment.uat.ts** (for `uat`):
+  
+  ```ts
+  export const environment = {
+    production: false,
+    env: 'uat',
+    remoteUrls: {
+      'create-todo': 'http://localhost:4201',
+    },
+  };
+  
+  ```
+
+* **apps/shell-app/src/environments/environment.prod.ts** (for `prod`):
+  
+  ```ts
+  export const environment = {
+    production: true,
+    env: 'prod',
+    remoteUrls: {
+      'create-todo': 'http://localhost:4201', // This is to be defined once our app is deployed
+    },
+  };
+  
+  
+  ```
+
+> Note: The remote urls will be decided once, the apps are deployed.
+
+You can follow the same approach for `remote-one` and `remote-two` or share some environment configurations between apps via libraries if needed.
+
+
+
+**Step 2**: Configure `project.json` for File Replacements
+
+In your `project.json` file for the app (e.g., `apps/shell-app/project.json`), you'll configure file replacements for each environment.
+
+Here’s an example of how to extend the configuration for a new `uat` environment in `project.json`:
+
+Updates are done under -
+
+`targets > build > configurations`
+
+`targets > serve`
+
+```json
+{
+  "name": "shell-app",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "app",
+  "sourceRoot": "apps/shell-app/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:webpack-browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/shell-app",
+        "index": "apps/shell-app/src/index.html",
+        "main": "apps/shell-app/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/shell-app/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/shell-app/public"
+          }
+        ],
+        "styles": ["apps/shell-app/src/styles.scss"],
+        "scripts": [],
+        "customWebpackConfig": {
+          "path": "apps/shell-app/webpack.config.ts"
+        }
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all",
+          "customWebpackConfig": {
+            "path": "apps/shell-app/webpack.prod.config.ts"
+          },
+          "fileReplacements": [
+            {
+              "replace": "apps/shell-app/src/environments/environment.ts",
+              "with": "apps/shell-app/src/environments/environment.prod.ts"
+            }
+          ]
+        },
+        "uat": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/shell-app/src/environments/environment.ts",
+              "with": "apps/shell-app/src/environments/environment.uat.ts"
+            }
+          ]
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@nx/angular:module-federation-dev-server",
+      "options": {
+        "port": 4200,
+        "publicHost": "http://localhost:4200"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "shell-app:build:production"
+        },
+        "uat": {
+          "buildTarget": "shell-app:build:uat"
+        },
+        "development": {
+          "buildTarget": "shell-app:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "shell-app:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/shell-app/jest.config.ts"
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "shell-app:build",
+        "port": 4200,
+        "spa": true
+      }
+    }
+  }
+}
+
+```
+
+**Step 3**: Update shell-app > main.ts
+
+```ts
+import { setRemoteDefinitions } from '@nx/angular/mf';
+import { environment } from './environments/environment';
+
+getRemoteAppUrl()
+  .then((remoteDefinitions) => {
+    setRemoteDefinitions(remoteDefinitions);
+  })
+  .then(() => import('./bootstrap').catch((err) => console.error(err)));
+
+function getRemoteAppUrl(): Promise<Record<string, any>> {
+  return new Promise((resolve, reject) => {
+    const remoteAppUrl = environment.remoteUrls;
+
+    if (remoteAppUrl) resolve(remoteAppUrl);
+    else reject('Unable to get remote urls');
+  });
+}
+
+```
+
+By now, you will be able to see the changes in Nx console with an updated entry under build and serve option:
+
+![](C:\Users\zakir\AppData\Roaming\marktext\images\2024-09-21-15-50-37-image.png)
+
+**Step 4**: Add an element into shell-app> src > app > app.component to see live changes:
+
+```ts
+import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { NxWelcomeComponent } from './nx-welcome.component';
+import { environment } from '../environments/environment';
+
+@Component({
+  standalone: true,
+  imports: [NxWelcomeComponent, RouterModule],
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss',
+})
+export class AppComponent {
+  title = 'shell-app';
+
+  env = environment.env;
+}
+
+```
+
+```html
+<ul class="remote-menu">
+  <li><a routerLink="/">Home</a></li>
+  <li><a routerLink="createTodo">Create Todo</a></li>
+</ul>
+<div>
+  <span>ENV: </span
+  ><span
+    style="
+      border: 2px solid black;
+      border-radius: 5px;
+      padding: 0px 5px;
+      color: green;
+    "
+    >{{ env }}</span
+  >
+</div>
+<router-outlet></router-outlet>
+
+```
+
+This will show an element that will tell us what environment we are currently running.
+
+**Step 5**: Serve applicaiton with different environment
+
+Development:
+
+![](C:\Users\zakir\AppData\Roaming\marktext\images\2024-09-21-15-55-47-image.png)
+
+UAT:
+
+![](C:\Users\zakir\AppData\Roaming\marktext\images\2024-09-21-15-55-05-image.png)
+
+
 
 ## Contributing
 
