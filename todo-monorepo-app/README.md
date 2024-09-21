@@ -4,8 +4,6 @@
 
 This repository contains a **Todo App** built using **Nx**, **Angular**, and **Module Federation**. The project demonstrates the use of Nx's monorepo architecture to manage multiple applications and libraries in a single repository, alongside **Module Federation** to dynamically load micro-frontends.
 
-
-
 ## Table of Contents
 
 1. [Introduction to Nx Monorepo](#introduction-to-nx-monorepo)
@@ -356,3 +354,11 @@ export const appRoutes: Route[] = [
 **Step 5**: Restart host and remote servers then load host url: `localhost:4200`
 
 ![](../resources/todo-monorepo-app/ui-with-shell-and-remote.gif)
+
+
+
+
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request if you'd like to contribute to this project.
