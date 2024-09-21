@@ -4,6 +4,8 @@
 
 This repository contains a **Todo App** built using **Nx**, **Angular**, and **Module Federation**. The project demonstrates the use of Nx's monorepo architecture to manage multiple applications and libraries in a single repository, alongside **Module Federation** to dynamically load micro-frontends.
 
+> This is only a demonstration of Nx Module Federation architecture through a real world project. This will not teach UI design and repective UI coding steps.
+
 ## Table of Contents
 
 1. [Introduction to Nx Monorepo](#introduction-to-nx-monorepo)
@@ -14,8 +16,6 @@ This repository contains a **Todo App** built using **Nx**, **Angular**, and **M
 6. [Running the Application](#running-the-application)
 7. [Deployment](#deployment)
 8. [Contributing](#contributing)
-
-
 
 ## Introduction to Nx Monorepo
 
@@ -35,8 +35,6 @@ This project demonstrates how to:
 - Use module federation to split the app into **Shell** (host) and **Remote** (micro-frontend) apps
 - Share code across multiple apps and libraries
 - Deploy the project using modern CI/CD pipelines
-
-
 
 ## Technologies Used
 
@@ -58,8 +56,6 @@ apps/
 
 - **Shell App**: The main application that serves as the host for micro-frontends.
 - **Create Todo & View Todo**: A remote applications that is loaded dynamically into the shell via module federation.
-
-
 
 > Current versions: Angular CLI - 17.3.8, Node - 20.16.0, NPM - 10.8.2, NX - 19.7.3
 
@@ -89,8 +85,6 @@ Package                      Version
 @angular-devkit/schematics   17.3.8 (cli-only)
 @schematics/angular          17.3.8 (cli-only)
 ```
-
-
 
 ## Creating Shell and Remote Apps
 
@@ -158,8 +152,6 @@ Nx Console is an editor extension that enriches your developer experience. It le
 - [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 - [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 - [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-
 
 **Step 2**: Using Nx Console -> remove unwanted applications
 
@@ -230,8 +222,6 @@ Hit play button under `shell-app > serve > development` and the shell-app monore
 
 ![](../resources/todo-monorepo-app/shell-app-ui.png)
 
-
-
 **Step 4**: Create Remote Application using Nx Generate UI
 
 1. Right click on `apps` folder and select Nx Generate (UI).
@@ -284,8 +274,6 @@ CREATE apps/create-todo/src/bootstrap.ts
 **Step 5**: Start the create-todo (at http://localhost:4201)
 
 ![](../resources/todo-monorepo-app/create-todo-ui.png)
-
-
 
 ## Connect Host and Remote app
 
@@ -354,10 +342,6 @@ export const appRoutes: Route[] = [
 **Step 5**: Restart host and remote servers then load host url: `localhost:4200`
 
 ![](../resources/todo-monorepo-app/ui-with-shell-and-remote.gif)
-
-
-
-
 
 ## Contributing
 
