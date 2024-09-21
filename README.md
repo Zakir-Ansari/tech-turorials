@@ -1,6 +1,6 @@
 # All Tech Tutorials
 
-This repository contains tutorials of various tech projects with step by step tutorials.
+This repository contains various tech projects with step by step tutorials.
 
 ## Index
 
