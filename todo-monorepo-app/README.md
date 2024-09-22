@@ -1,10 +1,12 @@
 # Todo App using Nx Angular Monorepo with Module Federation
 
+![](../resources/todo-monorepo-app/NX-Angular-logo.png)
+
 ## Overview
 
 This repository contains a **Todo App** built using **Nx**, **Angular**, and **Module Federation**. The project demonstrates the use of Nx's monorepo architecture to manage multiple applications and libraries in a single repository, alongside **Module Federation** to dynamically load micro-frontends.
 
-> This is only a demonstration of Nx Module Federation architecture through a real world project. This will not teach UI design and respective UI coding steps.
+> This is only a demonstration of Nx Module Federation architecture through a real world project. This will not teach UI design and repective UI coding steps.
 
 ## Table of Contents
 
@@ -605,7 +607,7 @@ export class AppComponent {
 
 This will show an element that will tell us what environment we are currently running.
 
-**Step 5**: Serve application with different environment
+**Step 5**: Serve applicaiton with different environment
 
 Development:
 
@@ -646,7 +648,7 @@ Step 2: Go to dashboard and click `Add New > Project`.
 
 **Step 3**: Import your git repository where the monorepo project resides, by adding git account to your poject and allowing access to your git project.
 
-**Step 4**: Then in configure project tab, add below deployment commands:
+**Step 4**: Then in configurate project tab, add below deployment commands:
 
 Build Command:
 
@@ -672,7 +674,7 @@ Once the process will be completed you will a screen like this:
 
 You can visit the app, or you can edit the app url in the project settings option.
 
-In our case, the deployed app url is: `https://create-todo-nine.vercel.app` and that is our create-todo app's production url
+In our case, the app is deployed url is: `https://create-todo-nine.vercel.app` and that is our create-todo app's production url
 
 ![](../resources/todo-monorepo-app/vercel-create-todo-deployed-UI.png)
 
@@ -696,9 +698,7 @@ export const environment = {
 
 ![](../resources/todo-monorepo-app/vercel-todo-shell-app-deployed.png)
 
-With that, deployment process is also done.
-
-Keep learning and developing! ✌️😁
+With this, deployment process is also done.
 
 ## Contributing
 
