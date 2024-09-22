@@ -344,15 +344,11 @@ export const appRoutes: Route[] = [
 
 ![](../resources/todo-monorepo-app/ui-with-shell-and-remote.gif)
 
-
-
 ## Creating Environments
 
 To handle environment variables in an Nx Angular monorepo that can be used across the application for different environments like development (`dev`), staging (`uat`), and production (`prod`). Nx and Angular provide built-in mechanisms to handle environment-specific configurations, and you can extend this to fit your use case.
 
 Here are the steps to set up environment variables in an Nx Angular monorepo for `dev`, `uat`, and `prod` environments:
-
-
 
 **Step 1**: Set Up Environment Files for Each App
 
@@ -381,7 +377,6 @@ For example, in each app (e.g., `shell-app`), create environment files in the `s
       'create-todo': 'http://localhost:4201',
     },
   };
-  
   ```
 
 * **apps/shell-app/src/environments/environment.prod.ts** (for `prod`):
@@ -394,9 +389,9 @@ For example, in each app (e.g., `shell-app`), create environment files in the `s
       'create-todo': 'http://localhost:4201', // This is to be defined once our app is deployed
     },
   };
-  
-  
   ```
+
+
 
 > Note: The remote urls will be decided once, the apps are deployed.
 
@@ -545,6 +540,8 @@ Updates are done under -
 
 ```
 
+
+
 **Step 3**: Update shell-app > main.ts
 
 ```ts
@@ -565,7 +562,6 @@ function getRemoteAppUrl(): Promise<Record<string, any>> {
     else reject('Unable to get remote urls');
   });
 }
-
 ```
 
 By now, you will be able to see the changes in Nx console with an updated entry under build and serve option:
@@ -592,7 +588,6 @@ export class AppComponent {
 
   env = environment.env;
 }
-
 ```
 
 ```html
@@ -613,7 +608,6 @@ export class AppComponent {
   >
 </div>
 <router-outlet></router-outlet>
-
 ```
 
 This will show an element that will tell us what environment we are currently running.
@@ -630,7 +624,93 @@ UAT:
 
 ## Deployment
 
-Vercel deployment
+There are several free platforms where you can deploy your Nx monorepo applications, including the shell app and remote apps. For this demonstration we are going to use a platform called [Vercel](https://vercel.com/docs/getting-started-with-vercel).
+
+**About Vercel**
+
+- **Overview**: Vercel is a popular platform for deploying frontend applications. It supports monorepos out of the box and integrates well with Nx.
+
+- **Free Tier**: Yes, Vercel offers a generous free tier that should be sufficient for small to medium-sized projects.
+
+- **Monorepo Support**: Vercel handles monorepos seamlessly. You can deploy each app (shell and remotes) as separate projects on Vercel.
+
+- **Setup**:
+  
+  1. Push your Nx monorepo to a Git repository (e.g., GitHub, GitLab).
+  2. Connect your Git repository to Vercel.
+  3. Create separate Vercel projects for the `shell-app`, `create-todo`, and `view-todo`.
+  4. Make sure, for each app, specify the build and output folder (`dist/apps/shell-app`, `dist/apps/create-todo`, etc.).
+  
+  **URL Setup**: Each app will be deployed on its own Vercel URL (e.g., `shell.vercel.app`, `create-todo.vercel.app`).
+
+
+
+### Deployment Steps
+
+**Step 1**: Create/Login to Vercel Account.
+
+Step 2: Go to dashboard and click `Add New > Project`.
+
+![](../resources/todo-monorepo-app/vercel-add-new-project.png)
+
+**Step 3**: Import your git repository where the monorepo project resides, by adding git account to your poject and allowing access to your git project.
+
+**Step 4**: Then in configurate project tab, add below deployment commands:
+
+Build Command:
+
+`nx run create-todo:build --configuration=production`
+
+Output Directory:
+
+`dist/apps/create-todo`
+
+Install Command:
+
+`npm ci`
+
+![](../resources/todo-monorepo-app/vercel-create-todo-deployment-command.png)
+
+Then hit deploy. 
+
+Once the process will be completed you will a screen like this:
+
+![](../resources/todo-monorepo-app/vercel-create-todo-deployment-done.png)
+
+> Note: There might be a chance that the deployment fails, saying `'nx' is not recognized as an internal or external command`. To solve this error, run `npm i nx --save` to install nx in your project.
+
+
+
+You can visit the app, or you can edit the app url in the project settings option.
+
+In our case, the app is deployed url is: `https://create-todo-nine.vercel.app`  and that is our create-todo app's production url
+
+![](../resources/todo-monorepo-app/vercel-create-todo-deployed-UI.png)
+
+
+
+**Step 5**: Update the environment's remoteUrls for shell app so that, create-todo remoteEntry will be available to our shell-app, once it is deployed.
+
+`shell-app > src > environments > environment.prod.ts`
+
+```ts
+export const environment = {
+  production: true,
+  env: 'prod',
+  remoteUrls: {
+    'create-todo': 'https://create-todo-nine.vercel.app',
+  },
+};
+
+```
+
+**Step 6**: Push the changes and follow the same steps we did for the deployment of create-todo app, but this time, do it for shell-app.
+
+**Todo Shell App - Deployed UI**
+
+![](../resources/todo-monorepo-app/vercel-todo-shell-app-deployed.png)
+
+With this, deployment process is also done.
 
 ## Contributing
 
