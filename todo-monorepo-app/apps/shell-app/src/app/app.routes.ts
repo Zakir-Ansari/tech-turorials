@@ -1,11 +1,11 @@
 import { loadRemoteModule } from '@nx/angular/mf';
-import { NxWelcomeComponent } from './nx-welcome.component';
 import { Route } from '@angular/router';
+import { HomeComponent } from './components/home/home.component';
 
 export const appRoutes: Route[] = [
   {
     path: '',
-    component: NxWelcomeComponent,
+    component: HomeComponent,
   },
   {
     path: 'createTodo',

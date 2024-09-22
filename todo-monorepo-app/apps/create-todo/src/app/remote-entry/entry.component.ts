@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NxWelcomeComponent } from './nx-welcome.component';
+import { CreateTodoComponent } from '../components/create-todo/create-todo.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, NxWelcomeComponent],
+  imports: [CommonModule, CreateTodoComponent],
   selector: 'app-create-todo-entry',
-  template: `<app-nx-welcome></app-nx-welcome>`,
+  template: `<app-create-todo></app-create-todo>`,
 })
 export class RemoteEntryComponent {}
