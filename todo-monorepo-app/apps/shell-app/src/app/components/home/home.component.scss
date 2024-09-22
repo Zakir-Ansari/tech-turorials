@@ -1,0 +1,19 @@
+.anchor {
+  text-decoration: inherit;
+  cursor: pointer;
+  color: inherit;
+  transition: 0.5s;
+}
+
+.anchor:hover {
+  border-color: aqua;
+  color: aqua;
+}
+
+.nx-icon {
+  height: 20px;
+}
+
+.module-fed-logo {
+  height: 48px;
+}
