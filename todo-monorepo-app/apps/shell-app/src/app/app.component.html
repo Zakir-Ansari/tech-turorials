@@ -4,28 +4,21 @@
     <div class="col-xl-8 col-lg-10 col-md-12">
       <div class="d-flex">
         <div class="flex-grow-1">
-          <h1
-            class="text-info-emphasis cursor-pointer"
-            routerLink="/"
-            title="TODO Home"
-          >
+          <h1 class="text-info-emphasis">
             TODO <i class="bx bxs-message-square-check fs-2"></i>
           </h1>
         </div>
 
+        @for (navRoute of navRoutes; track $index) {
         <div
-          class="align-self-center nav-icon cursor-pointer"
-          routerLink="createTodo"
-          title="Create TODO"
+          class="align-self-center cursor-pointer nav-icon mx-1"
+          routerLink="{{ navRoute.route }}"
+          routerLinkActive="active"
+          title="{{ navRoute.title }}"
         >
-          <i class="bx bx-edit-alt fs-4"></i>
+          <i class="bx fs-4" [class]="navRoute.bxIcon"></i>
         </div>
-        <div
-          class="align-self-center nav-icon cursor-pointer"
-          title="View TODOs"
-        >
-          <i class="bx bxs-notepad fs-4"></i>
-        </div>
+        }
       </div>
       <router-outlet></router-outlet>
     </div>

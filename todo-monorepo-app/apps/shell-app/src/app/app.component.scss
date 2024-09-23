@@ -3,27 +3,26 @@
 }
 
 .nav-icon {
-  border: 1px solid white;
+  height: 50px;
+  width: 50px;
+  position: relative;
   border-radius: 50%;
-  text-align: center;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  margin: 0px 2px;
-  transition: 0.5s;
+  border: 1px solid gray;
   .bx {
-    align-self: center;
-    padding: 7px;
-    color: white;
-    transition: 0.5s;
+    margin: 0;
+    position: absolute;
+    top: 24%;
+    left: 25%;
   }
 }
 
 .nav-icon:hover {
-  border: 1px solid aqua;
-  transition: 0.5s;
   .bx {
-    color: aqua;
-    transition: 0.5s;
+    color: aquamarine;
   }
+}
+
+.active {
+  border-color: aqua;
+  color: aqua;
 }
