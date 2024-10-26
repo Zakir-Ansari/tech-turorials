@@ -22,7 +22,14 @@
   }
 }
 
-.active {
-  border-color: aqua;
-  color: aqua;
+.nav-tabs {
+  .nav-link {
+    i {
+      margin-right: 0.2rem;
+    }
+    color: white;
+  }
+  .nav-link.active {
+    color: #6edff6;
+  }
 }

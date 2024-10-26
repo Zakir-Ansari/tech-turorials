@@ -8,18 +8,16 @@
             TODO <i class="bx bxs-message-square-check fs-2"></i>
           </h1>
         </div>
-
-        @for (navRoute of navRoutes; track $index) {
-        <div
-          class="align-self-center cursor-pointer nav-icon mx-1"
-          routerLink="{{ navRoute.route }}"
-          routerLinkActive="active"
-          title="{{ navRoute.title }}"
-        >
-          <i class="bx fs-4" [class]="navRoute.bxIcon"></i>
-        </div>
-        }
       </div>
+      <ul class="nav nav-tabs">
+        @for (navRoute of navRoutes; track $index) {
+        <li class="nav-item">
+          <a class="nav-link" [class]="{'disabled' : navRoute.isDisabled}" routerLinkActive="active"
+            routerLink="{{ navRoute.route }}"><i class="bx fs-7" [class]="navRoute.bxIcon"></i>{{ navRoute.title
+            }}</a>
+        </li>
+        }
+      </ul>
       <router-outlet></router-outlet>
     </div>
   </div>

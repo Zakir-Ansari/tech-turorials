@@ -17,6 +17,9 @@
     "paths": {
       "create-todo/Routes": [
         "apps/create-todo/src/app/remote-entry/entry.routes.ts"
+      ],
+      "view-todo/Routes": [
+        "apps/view-todo/src/app/remote-entry/entry.routes.ts"
       ]
     }
   },
