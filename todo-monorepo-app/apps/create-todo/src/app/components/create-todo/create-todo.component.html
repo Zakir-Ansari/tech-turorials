@@ -1,1 +1,22 @@
-<p>create-todo works!</p>
+<div class="row">
+    <form class="col-md-8 offset-md-2" [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input formControlName="title" class="form-control" id="title" placeholder="Shopping">
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea formControlName="description" class="form-control" id="description" rows="2"
+                placeholder="Need to go for shopping at.."></textarea>
+        </div>
+
+        <div class="container text-center" text-center>
+            <button type="submit" class="btn btn-success mx-1">
+                Save
+                <i class='bx bx-check'></i>
+            </button>
+            <button type="button" class="btn btn-secondary mx-1">Reset <i class='bx bx-undo'></i></button>
+        </div>
+    </form>
+
+</div>
