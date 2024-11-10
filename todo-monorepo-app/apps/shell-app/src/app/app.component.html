@@ -9,15 +9,6 @@
           </h1>
         </div>
       </div>
-      <ul class="nav nav-tabs">
-        @for (navRoute of navRoutes; track $index) {
-        <li class="nav-item">
-          <a class="nav-link" [class]="{'disabled' : navRoute.isDisabled}" routerLinkActive="active"
-            routerLink="{{ navRoute.route }}"><i class="bx fs-7" [class]="navRoute.bxIcon"></i>{{ navRoute.title
-            }}</a>
-        </li>
-        }
-      </ul>
       <router-outlet></router-outlet>
     </div>
   </div>

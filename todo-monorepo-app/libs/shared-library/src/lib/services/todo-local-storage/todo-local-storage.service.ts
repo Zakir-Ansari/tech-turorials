@@ -8,6 +8,7 @@ export class TodoLocalStorageService {
   KEY = 'todo';
 
   saveNewTask(task: Task) {
+    task.dateTime = new Date().toLocaleString();
     const allTasks = this.getTasks();
     task.id = allTasks.length + 1;
     allTasks.push(task);
@@ -15,6 +16,8 @@ export class TodoLocalStorageService {
   }
 
   getTasks(): Task[] {
-    return JSON.parse(localStorage.getItem(this.KEY) ?? '') as Task[];
+    const tasks = localStorage.getItem(this.KEY);
+    if (tasks) return JSON.parse(tasks) as Task[];
+    return [];
   }
 }

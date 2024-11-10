@@ -3,6 +3,5 @@ export const environment = {
   env: 'dev',
   remoteUrls: {
     'create-todo': 'http://localhost:4201',
-    'view-todo': 'http://localhost:4202',
   },
 };

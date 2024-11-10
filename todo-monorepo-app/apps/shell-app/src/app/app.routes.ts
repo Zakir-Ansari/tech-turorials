@@ -14,11 +14,6 @@ export const appRoutes: Route[] = [
       loadRemoteModule('create-todo', './Routes').then((m) => m.remoteRoutes),
   },
   {
-    path: 'viewTodo',
-    loadChildren: () =>
-      loadRemoteModule('view-todo', './Routes').then((m) => m.remoteRoutes),
-  },
-  {
     path: 'about',
     component: AboutComponent,
   },

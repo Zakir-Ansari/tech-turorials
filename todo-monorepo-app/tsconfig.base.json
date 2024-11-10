@@ -18,9 +18,6 @@
       "@todo-monorepo-app/shared-library": ["libs/shared-library/src/index.ts"],
       "create-todo/Routes": [
         "apps/create-todo/src/app/remote-entry/entry.routes.ts"
-      ],
-      "view-todo/Routes": [
-        "apps/view-todo/src/app/remote-entry/entry.routes.ts"
       ]
     }
   },

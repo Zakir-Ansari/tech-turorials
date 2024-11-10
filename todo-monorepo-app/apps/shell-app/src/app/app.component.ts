@@ -16,12 +16,6 @@ export class AppComponent {
 
   navRoutes = [
     {
-      title: 'View TODO',
-      bxIcon: 'bxs-notepad',
-      route: 'viewTodo',
-      isDisabled: false,
-    },
-    {
       title: 'Create TODO',
       bxIcon: 'bx-edit-alt',
       route: 'createTodo',
