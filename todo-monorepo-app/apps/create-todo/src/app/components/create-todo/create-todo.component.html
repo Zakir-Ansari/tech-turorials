@@ -1,7 +1,8 @@
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Launch demo modal
-</button>
+<div class="bg-success float d-flex cursor-pointer" data-bs-toggle="modal" data-bs-target="#exampleModal"
+    title="Create New Task">
+    <i class='bx bx-plus mx-auto align-self-center fs-2'></i>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -18,7 +19,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
-                    <textarea formControlName="description" class="form-control" id="description" rows="2"
+                    <textarea formControlName="description" class="form-control" id="description" rows="1"
                         placeholder="Need to go for shopping at.."></textarea>
                 </div>
 
@@ -47,39 +48,25 @@
 
 
 <!-- View Todo list-->
-<div class="card my-2">
-    <div class="card-header d-flex justify-content-between">
-        Featured @if(true) {
-        <span>2 days ago</span>
-        } @else {
-        <i class='bx bxs-check-circle text-secondary fs-4' title="pending"></i>
+@for (task of tasks; track $index) {
+<div class="card my-3">
+    <div class="card-header bg-primary-subtle">
+        <div class="d-flex justify-content-between">
+            <h4>{{ task.title}} <i class='bx bxs-edit-alt cursor-pointer' title="Edit Task"></i></h4> @if(true) {
+            <span class="align-self-center">{{ util.getTimeDifference(task.dateTime )}} ago</span>
+            } @else {
+            <i class='bx bxs-check-circle text-secondary fs-4' title="pending"></i>
+            }
+        </div>
+        <div class="text-secondary">{{ task.description }}</div>
+    </div>
+    <ul class="list-group list-group-flush">
+        @for (subTask of task.subTasks; track $index) {
+        <li class="list-group-item d-flex justify-content-between">
+            <div>{{ subTask.name }}</div>
+            <input class="form-check-input" type="checkbox" value="" aria-label="Checkbox for following text input">
+        </li>
         }
-    </div>
-    <div class=" card-body">
-        <p>This is description</p>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">An item</li>
-            <li class="list-group-item">A second item</li>
-            <li class="list-group-item">A third item</li>
-        </ul>
-
-    </div>
+    </ul>
 </div>
-
-<div class="card my-2">
-    <div class="card-header d-flex justify-content-between">
-        Featured @if(true) {
-        <span>2 days ago</span>
-        } @else {
-        <i class='bx bxs-check-circle text-secondary fs-4' title="pending"></i>
-        }
-    </div>
-    <div class="card-body">
-        <p>This is description</p>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">An item</li>
-            <li class="list-group-item">A second item</li>
-            <li class="list-group-item">A third item</li>
-        </ul>
-    </div>
-</div>
+}

@@ -10,6 +10,7 @@ import {
 import {
   Task,
   TodoLocalStorageService,
+  UtilService,
 } from '@todo-monorepo-app/shared-library';
 
 @Component({
@@ -21,6 +22,7 @@ import {
 })
 export class CreateTodoComponent implements OnInit {
   storageService = inject(TodoLocalStorageService);
+  util = inject(UtilService);
   taskForm!: FormGroup;
   tasks: Task[] = [];
 
