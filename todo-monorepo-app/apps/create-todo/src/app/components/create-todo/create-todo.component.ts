@@ -1,5 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -21,10 +27,16 @@ import {
   styleUrl: './create-todo.component.scss',
 })
 export class CreateTodoComponent implements OnInit {
+  @ViewChild('toast', { static: true }) toastElement!: ElementRef;
+  @ViewChild('closeModal', { static: true }) closeModal!: ElementRef;
   storageService = inject(TodoLocalStorageService);
   util = inject(UtilService);
   taskForm!: FormGroup;
+  isTaskSubmitted = false;
   tasks: Task[] = [];
+
+  toastTitle = '';
+  toastMessage = '';
 
   constructor(private fb: FormBuilder) {
     this.taskForm = this.fb.group({
@@ -33,9 +45,23 @@ export class CreateTodoComponent implements OnInit {
       subTasks: this.fb.array([this.createSubTask()]),
     });
   }
+
   ngOnInit(): void {
     this.tasks = this.storageService.getTasks();
-    console.log('Tasks', this.tasks);
+  }
+
+  resetForm() {
+    this.taskForm.reset();
+    this.isTaskSubmitted = false;
+  }
+
+  showToast(title: string, message: string): void {
+    this.toastTitle = title;
+    this.toastMessage = message;
+    const toastElement = this.toastElement.nativeElement;
+    // Access the bootstrap.Toast API from the global object
+    const toastInstance = new (window as any).bootstrap.Toast(toastElement);
+    toastInstance.show();
   }
 
   // Create a new SubTask form group
@@ -64,8 +90,34 @@ export class CreateTodoComponent implements OnInit {
 
   // Submit the form
   saveTask(): void {
-    if (this.taskForm.valid) {
-      this.storageService.saveNewTask(this.taskForm.value);
+    console.log(this.taskForm, this.subTasks);
+    this.isTaskSubmitted = true;
+    if (!this.taskForm.valid || !this.subTasks.valid) {
+      console.log();
+      return;
     }
+    this.storageService.saveNewTask(this.taskForm.value);
+    this.closeModal.nativeElement.click();
+    this.ngOnInit();
+    this.showToast('Success', 'Task Saved');
+    this.resetForm();
+  }
+
+  updateStubTaskStatus(givenSubTaskId: number, task: Task) {
+    task.subTasks.map((subTask) => {
+      if (subTask.id === givenSubTaskId) {
+        subTask.status = !subTask.status;
+      }
+      return subTask;
+    });
+
+    this.storageService.updateTask(task);
+    this.ngOnInit();
+  }
+
+  deleteTask(taskId: number) {
+    this.storageService.deleteTask(taskId);
+    this.showToast('Success', 'Task Deleted');
+    this.ngOnInit();
   }
 }

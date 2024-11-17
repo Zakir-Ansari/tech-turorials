@@ -1,5 +1,5 @@
 <!-- Button trigger modal -->
-<div class="bg-success float d-flex cursor-pointer" data-bs-toggle="modal" data-bs-target="#exampleModal"
+<div #closeModal class="bg-success float d-flex cursor-pointer" data-bs-toggle="modal" data-bs-target="#exampleModal"
     title="Create New Task">
     <i class='bx bx-plus mx-auto align-self-center fs-2'></i>
 </div>
@@ -10,12 +10,14 @@
         <form class="modal-content" [formGroup]="taskForm" (ngSubmit)="saveTask()">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Create Task</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="resetForm()"></button>
             </div>
             <div class="modal-body">
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
-                    <input formControlName="title" class="form-control" id="title" placeholder="Shopping">
+                    <input formControlName="title" class="form-control" id="title" placeholder="Shopping"
+                        [ngClass]="{ 'is-invalid': isTaskSubmitted || taskForm.get('title')?.invalid && taskForm.get('title')?.touched }">
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
@@ -27,7 +29,8 @@
                     <label for="name">SubTask {{subTasks.controls.length}}</label>
                     <div *ngFor="let subTask of subTasks.controls; let i = index" [formGroupName]="i">
                         <div class="mb-3 d-flex">
-                            <input formControlName="name" class="form-control" id="title" placeholder="Shopping">
+                            <input formControlName="name" class="form-control" id="title" placeholder="Shopping"
+                                [ngClass]="{ 'is-invalid': isTaskSubmitted || (subTasks.at(i).get('name')?.invalid && subTasks.at(i).get('name')?.touched) }">
                             <button *ngIf="subTasks.controls.length !== (i + 1)" class="btn btn-danger ms-1"
                                 type="button" (click)="removeSubTask(i)"><i class='bx bx-minus'></i></button>
                             <button *ngIf="subTasks.controls.length === (i + 1)" class="btn btn-success ms-1"
@@ -38,7 +41,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel<i
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetForm()">Cancel<i
                         class='bx bx-close'></i></button>
                 <button type="submit" class="btn btn-primary">Save Task<i class='bx bx-check'></i></button>
             </div>
@@ -48,14 +51,28 @@
 
 
 <!-- View Todo list-->
+@if(tasks.length === 0) {
+<div class="container my-5">
+    <div class="row text-center py-5">
+        <i class='bx bxl-dropbox text-secondary'></i>
+        <h3>You don't have any task created!</h3>
+    </div>
+</div>
+}
+@else {
 @for (task of tasks; track $index) {
 <div class="card my-3">
     <div class="card-header bg-primary-subtle">
         <div class="d-flex justify-content-between">
-            <h4>{{ task.title}} <i class='bx bxs-edit-alt cursor-pointer' title="Edit Task"></i></h4> @if(true) {
-            <span class="align-self-center">{{ util.getTimeDifference(task.dateTime )}} ago</span>
+            <h4>
+                {{ task.title}}
+                <i class='bx bxs-edit-alt cursor-pointer fs-5 mx-1 text-success' title="Edit Task"></i>
+                <i class=' bx bx-trash fs-5 mx-1 text-danger' title="Delete Task" (click)="deleteTask(task.id)"></i>
+            </h4>
+            @if(!task.completed) {
+            <span class="align-self-center">Pending since {{ util.getTimeDifference(task.dateTime )}}</span>
             } @else {
-            <i class='bx bxs-check-circle text-secondary fs-4' title="pending"></i>
+            <i class='bx bxs-check-circle text-success fs-4 align-self-center' title="pending"></i>
             }
         </div>
         <div class="text-secondary">{{ task.description }}</div>
@@ -63,10 +80,28 @@
     <ul class="list-group list-group-flush">
         @for (subTask of task.subTasks; track $index) {
         <li class="list-group-item d-flex justify-content-between">
-            <div>{{ subTask.name }}</div>
-            <input class="form-check-input" type="checkbox" value="" aria-label="Checkbox for following text input">
+            <div [ngClass]="{ completed : subTask.status} ">{{ subTask.name }}</div>
+            <input class="form-check-input" type="checkbox" value="" [checked]="subTask.status"
+                aria-label="Checkbox for following text input" (click)="updateStubTaskStatus(subTask.id, task)">
         </li>
         }
     </ul>
 </div>
 }
+}
+
+
+
+<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
+    <div id="liveToast" #toast class="toast bg-body-secondary" role="alert" aria-live="assertive" aria-atomic="true"
+        data-bs-delay="3000">
+        <div class="toast-header">
+            <i class='bx bxs-check-circle text-success me-1'></i>
+            <strong class="me-auto">{{ toastTitle }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            {{ toastMessage }}
+        </div>
+    </div>
+</div>
